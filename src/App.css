@@ -1,0 +1,376 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --bg-dark: #0f0f11;
+  --bg-panel: #18181b;
+  --primary: #6366f1; /* Indigo */
+  --primary-glow: rgba(99, 102, 241, 0.4);
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --glass: rgba(24, 24, 27, 0.75);
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 70px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 100;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.logo-icon {
+  color: var(--primary);
+}
+
+.logo-accent {
+  color: var(--primary);
+}
+
+.open-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.open-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.open-btn:disabled {
+  background: #444;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Search Bar */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #27272a;
+  border-radius: 99px;
+  padding: 5px 5px 5px 20px;
+  width: 500px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  margin-right: 10px;
+}
+
+.search-bar input {
+  background: transparent;
+  border: none;
+  color: white;
+  flex: 1;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.search-bar button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar button:hover {
+  transform: scale(1.05);
+}
+
+.search-bar button:disabled {
+  background: #444;
+  cursor: not-allowed;
+}
+
+/* --- GRID --- */
+.gallery-grid {
+  padding: 100px 40px 40px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.gallery-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--bg-panel);
+  aspect-ratio: 1; /* Makes tiles square */
+}
+
+.gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-card:hover img {
+  transform: scale(1.05);
+}
+
+/* --- EMPTY STATE --- */
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.empty-state h1 {
+  font-size: 3rem;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+/* --- VIEWER OVERLAY --- */
+.viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.viewer-content {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.gpu-canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.gpu-image {
+  max-width: 95vw;
+  max-height: 90vh;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Controls */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1002;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  z-index: 1002;
+  transition: color 0.2s, transform 0.2s;
+  padding: 20px;
+}
+
+.nav-btn:hover {
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.nav-btn.prev { left: 20px; }
+.nav-btn.next { right: 20px; }
+
+.nav-btn:disabled {
+  opacity: 0.1;
+  cursor: default;
+}
+
+/* Footer Info */
+.viewer-footer {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 15px;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.filename {
+  opacity: 0.7;
+  font-family: monospace;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* --- VIEWER OVERLAY --- */
+.viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.98); /* Darker for better contrast */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-content {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- VIEWER OVERLAY --- */
+.viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #000000; /* Pure black for better focus */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-content {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* RESET WRAPPERS: 
+   We MUST remove flexbox here. 
+   The library places the image at (0,0) and mathematically moves it to the center.
+   If we use flexbox, we break that math.
+*/
+.gpu-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+}
+
+.gpu-content {
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0; /* Crucial for correct zooming */
+}
+
+.gpu-image {
+  max-width: 95vw; 
+  max-height: 90vh;
+  object-fit: contain;
+  /* Remove shadows or margins that might throw off dimensions */
+  display: block; 
+}
